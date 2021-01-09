@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', (req, res, next) => {
   post
     .findAll()
-    .then((posts) => res.send(posts))
+    .then((posts) => res.send(JSON.stringify(posts)))
     .catch((err) => next(err));
 });
 
