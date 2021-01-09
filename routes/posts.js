@@ -1,14 +1,17 @@
 const express = require('express');
-const path = require('path');
 const db = require('../models/index');
 
-const { post } = db;
+const { Article } = db;
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-  post
-    .findAll()
+router.route('/').get((req, res, next) => {
+  Article.findAll({
+    include: {
+      model: db.User,
+      attributes: ['id', 'firstname', 'lastname'],
+    },
+  })
     .then((posts) => res.send(JSON.stringify(posts)))
     .catch((err) => next(err));
 });

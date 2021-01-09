@@ -19,6 +19,6 @@ app.use(function errorHandler(error, req, res, next) {
   res.status(500).json(response);
 });
 
-app.use('/api/posts', require('./routes/posts'));
+app.use('/api/articles', require('./routes/posts'));
 
 module.exports = app;
