@@ -1,7 +1,6 @@
 const express = require('express');
 const db = require('../models/index');
 const bodyParser = require('body-parser');
-const { Router } = require('express');
 
 parser = bodyParser.json();
 
