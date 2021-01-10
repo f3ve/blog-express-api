@@ -44,6 +44,7 @@ router
 router
   .route('/:slug')
   .all(async (req, res, next) => {
+    // check the article exists
     try {
       article = await Article.findOne({ where: { slug: req.params.slug } });
 
@@ -66,6 +67,39 @@ router
     Article.destroy({
       where: { slug: req.params.slug },
     }).then(res.status(204).end());
+  })
+  .patch(parser, (req, res, next) => {
+    const slug = req.body.title
+      .toLowerCase()
+      .replace(/[^\w\s]|_/g, '')
+      .replace(/\s/g, '_');
+
+    Article.update(
+      {
+        title: req.body.title,
+        content: req.body.content,
+        updatedAt: new Date(),
+        slug,
+      },
+      {
+        where: {
+          slug: req.params.slug,
+        },
+      }
+    )
+      .then(() => {
+        Article.findOne({
+          where: {
+            slug,
+          },
+        }).then((article) => {
+          console.log(article);
+          res.status(200).send(article);
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
   });
 
 module.exports = router;
