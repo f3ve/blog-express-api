@@ -1,5 +1,7 @@
 'use strict';
 
+const { query } = require('../server');
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Users', [
@@ -48,6 +50,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return queryInterface.bulkDelete('posts', null, {});
+    await queryInterface.bulkDelete('Articles', null, {});
+    return queryInterface.bulkDelete('Users', null, {});
   },
 };
