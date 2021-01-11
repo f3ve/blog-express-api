@@ -1,9 +1,29 @@
 'use strict';
 
-const { query } = require('../server');
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert('Users', [
+      {
+        firstname: 'User',
+        lastname: 'demo',
+        email: 'email@email.com',
+        password: 'aaAA11!!',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+    await queryInterface.bulkInsert('Categories', [
+      {
+        name: 'React',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'Node',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
     return queryInterface.bulkInsert(
       'Articles',
       [
@@ -15,6 +35,7 @@ module.exports = {
           UserId: 1,
           description: 'This is a description yay',
           draft: false,
+          CategoryId: 1,
           publish_date: new Date(),
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -29,6 +50,7 @@ module.exports = {
           UserId: 1,
           description: ' this is a description yay',
           draft: true,
+          CategoryId: 2,
           publish_date: new Date(),
           createdAt: new Date(),
           updatedAt: new Date(),

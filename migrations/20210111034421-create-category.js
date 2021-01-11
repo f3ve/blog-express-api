@@ -21,39 +21,16 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
-    await queryInterface.createTable('ArticleCategories', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      ArticleId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Articles',
-          key: 'id',
-        },
-      },
-      CategoryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Categories',
-          key: 'id',
-        },
-      },
-    });
-    await queryInterface.addColumn('Articles', 'categories', {
+    await queryInterface.addColumn('Articles', 'CategoryId', {
       type: Sequelize.INTEGER,
       references: {
-        model: 'ArticleCategories',
+        model: 'Categories',
         key: 'id',
       },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('Articles', 'categories');
-    await queryInterface.dropTable('ArticleCategories');
+    await queryInterface.removeColumn('Articles', 'CategoryId');
     await queryInterface.dropTable('Categories');
   },
 };
