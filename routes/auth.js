@@ -18,7 +18,11 @@ router.route('/login').post(parser, (req, res, next) => {
         const token = jwt.sign({ user: user.id }, 'bananas');
 
         res
-          .cookie('authcookie', token, { maxAge: 900000, httpOnly: true })
+          .cookie('authcookie', token, {
+            maxAge: 900000,
+            httpOnly: true,
+            // secure: true,
+          })
           .status(200)
           .end();
       }

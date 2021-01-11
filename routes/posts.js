@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../models/index');
 const bodyParser = require('body-parser');
+const requireAuth = require('../middleware/auth');
 
 parser = bodyParser.json();
 
@@ -20,7 +21,7 @@ router
       .then((posts) => res.send(posts))
       .catch((err) => next(err));
   })
-  .post(parser, (req, res, next) => {
+  .post(requireAuth, parser, (req, res, next) => {
     Article.create({
       title: req.body.title,
       UserId: 1,
@@ -62,12 +63,12 @@ router
   .get((req, res, next) => {
     res.send(res.article);
   })
-  .delete((req, res, next) => {
+  .delete(requireAuth, (req, res, next) => {
     Article.destroy({
       where: { slug: req.params.slug },
     }).then(res.status(204).end());
   })
-  .patch(parser, (req, res, next) => {
+  .patch(requireAuth, parser, (req, res, next) => {
     const slug = req.body.title
       .toLowerCase()
       .replace(/[^\w\s]|_/g, '')
