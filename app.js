@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 
@@ -10,6 +11,7 @@ const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
 
 app.use(morgan(morganOption));
 app.use(helmet());
+app.use(cookieParser());
 app.use(function errorHandler(error, req, res, next) {
   let response;
   NODE_ENV === 'production'
@@ -20,5 +22,6 @@ app.use(function errorHandler(error, req, res, next) {
 });
 
 app.use('/api/articles', require('./routes/posts'));
+app.use('/api/auth', require('./routes/auth'));
 
 module.exports = app;
