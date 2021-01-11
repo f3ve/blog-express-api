@@ -3,6 +3,7 @@ const db = require('../models/index');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET, NODE_ENV } = require('../config');
+const bcrypt = require('bcrypt');
 
 parser = bodyParser.json();
 
@@ -13,22 +14,37 @@ const router = express.Router();
 router.route('/login').post(parser, (req, res, next) => {
   User.findOne({ where: { email: req.body.email } })
     .then((user) => {
-      console.log(user.dataValues.password);
-      console.log(req.body.password);
-      if (req.body.password === user.dataValues.password) {
-        const token = jwt.sign({ user: user.id }, JWT_SECRET);
-
-        res
-          .cookie('authcookie', token, {
-            maxAge: 900000,
-            httpOnly: true,
-            secure: NODE_ENV === 'production',
-          })
-          .status(200)
-          .end();
+      if (user === null) {
+        res.status(400).json({ error: 'Incorrect email or password' }).end();
       }
+      hash = user.dataValues.password;
+      password = req.body.password;
+      console.log({
+        hash,
+        password,
+      });
+      bcrypt.compare(password, hash, (err, result) => {
+        if (result) {
+          const token = jwt.sign({ user: user.id }, JWT_SECRET);
+          res
+            .cookie('authcookie', token, {
+              maxAge: 900000,
+              httpOnly: true,
+              secure: NODE_ENV === 'production',
+            })
+            .status(200)
+            .end();
+        }
+        if (!result) {
+          res.status(400).json({ error: 'Incorrect email or password' });
+        }
+
+        if (err) {
+          throw new Error(err);
+        }
+      });
     })
-    .catch((err) => next(err));
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;

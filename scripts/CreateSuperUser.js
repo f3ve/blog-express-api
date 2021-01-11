@@ -1,8 +1,9 @@
 const db = require('../models/index');
+const bcrypt = require('bcrypt');
 
 const { User } = db;
 
-function createSuperUser() {
+async function createSuperUser() {
   let firstname, lastname, email, password;
   const args = process.argv.slice(2);
   if (args.length < 4) {
@@ -34,6 +35,10 @@ function createSuperUser() {
     }
   });
 
+  bcrypt.hash(password, 10, (err, hash) => {
+    password = hash;
+  });
+
   if (!firstname) {
     console.error('Error: you must include a fname argument');
     return;
@@ -54,16 +59,27 @@ function createSuperUser() {
     return;
   }
 
-  User.create({
-    firstname,
-    lastname,
-    password,
-    email,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  })
-    .then((user) => console.log(`Success! Created new user ${user.firstname}.`))
-    .catch((err) => console.error('Error, unable to create user.', err));
+  bcrypt.hash(password, 10, (err, hash) => {
+    console.log({
+      firstname,
+      lastname,
+      email,
+      password: hash,
+    });
+
+    User.create({
+      firstname,
+      lastname,
+      password,
+      email,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+      .then((user) =>
+        console.log(`Success! Created new user ${user.firstname}.`)
+      )
+      .catch((err) => console.error('Error, unable to create user.', err));
+  });
 }
 
 createSuperUser();
