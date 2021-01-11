@@ -12,7 +12,8 @@
     "undomigration": "npx sequelize-cli db:migrate:undo",
     "seed": "npx sequelize-cli db:seed:all",
     "undoseed": "npx sequelize-cli db:seed:undo",
-    "undoallseeds": "npx sequelize-cli db:seed:undo:all"
+    "undoallseeds": "npx sequelize-cli db:seed:undo:all",
+    "createuser": "node scripts/CreateSuperUser.js"
   },
   "author": "",
   "license": "ISC",

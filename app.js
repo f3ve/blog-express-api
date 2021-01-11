@@ -23,5 +23,6 @@ app.use(function errorHandler(error, req, res, next) {
 
 app.use('/api/articles', require('./routes/posts'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
 
 module.exports = app;
