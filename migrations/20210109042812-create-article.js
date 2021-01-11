@@ -14,8 +14,16 @@ module.exports = {
       content: {
         type: Sequelize.TEXT,
       },
+      description: {
+        type: Sequelize.STRING,
+      },
       publish_date: {
         type: Sequelize.DATE,
+      },
+      draft: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       slug: {
         type: Sequelize.STRING,

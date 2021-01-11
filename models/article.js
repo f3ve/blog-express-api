@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.TEXT,
       publish_date: DataTypes.DATE,
       slug: DataTypes.STRING,
+      description: DataTypes.STRING,
+      draft: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
     },
     {
       sequelize,

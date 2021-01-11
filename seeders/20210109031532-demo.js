@@ -4,16 +4,6 @@ const { query } = require('../server');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Users', [
-      {
-        firstname: 'Demo',
-        lastname: 'user',
-        email: 'email@demo.com',
-        password: 'aaAA11!!',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
     return queryInterface.bulkInsert(
       'Articles',
       [
@@ -23,6 +13,8 @@ module.exports = {
             'This is demo content so we can see what things look like yay woo!!',
           slug: 'demo_title',
           UserId: 1,
+          description: 'This is a description yay',
+          draft: false,
           publish_date: new Date(),
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -35,6 +27,8 @@ module.exports = {
             'This is demo content so we can see what things like like yay w000!!!',
           slug: 'demo_title_2',
           UserId: 1,
+          description: ' this is a description yay',
+          draft: true,
           publish_date: new Date(),
           createdAt: new Date(),
           updatedAt: new Date(),

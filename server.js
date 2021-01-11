@@ -13,7 +13,7 @@ db.authenticate()
 app.set('db', db);
 
 app.listen(PORT, () => {
-  console.log(`Serverlistening at http://localhost:${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
 
 module.exports = db;

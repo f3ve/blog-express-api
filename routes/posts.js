@@ -19,7 +19,7 @@ router
         attributes: ['firstname', 'lastname'],
       },
     })
-      .then((posts) => res.send(posts))
+      .then((articles) => res.send(articles))
       .catch((err) => next(err));
   })
   .post(requireAuth, parser, (req, res, next) => {
