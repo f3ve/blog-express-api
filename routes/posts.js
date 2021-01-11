@@ -14,10 +14,11 @@ router
   .route('/')
   .get((req, res, next) => {
     Article.findAll({
-      include: {
-        model: db.User,
-        attributes: ['firstname', 'lastname'],
-      },
+      // include: {
+      //   model: db.User,
+      //   attributes: ['firstname', 'lastname'],
+      // },
+      include: db.Category,
     })
       .then((articles) => res.send(articles))
       .catch((err) => next(err));
