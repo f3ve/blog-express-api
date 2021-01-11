@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../models/index');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET, NODE_ENV } = require('../config');
 
 parser = bodyParser.json();
 
@@ -15,13 +16,13 @@ router.route('/login').post(parser, (req, res, next) => {
       console.log(user.dataValues.password);
       console.log(req.body.password);
       if (req.body.password === user.dataValues.password) {
-        const token = jwt.sign({ user: user.id }, 'bananas');
+        const token = jwt.sign({ user: user.id }, JWT_SECRET);
 
         res
           .cookie('authcookie', token, {
             maxAge: 900000,
             httpOnly: true,
-            // secure: true,
+            secure: NODE_ENV === 'production',
           })
           .status(200)
           .end();
