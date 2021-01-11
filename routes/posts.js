@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../models/index');
 const bodyParser = require('body-parser');
 const requireAuth = require('../middleware/auth');
+const checkExists = require('../middleware/article');
 
 parser = bodyParser.json();
 
@@ -43,23 +44,7 @@ router
 
 router
   .route('/:slug')
-  .all(async (req, res, next) => {
-    // check the article exists
-    try {
-      article = await Article.findOne({ where: { slug: req.params.slug } });
-
-      if (!article) {
-        return res.status(404).json({
-          error: 'Article does not exist',
-        });
-      }
-
-      res.article = article;
-      next();
-    } catch (err) {
-      next(err);
-    }
-  })
+  .all(checkExists)
   .get((req, res, next) => {
     res.send(res.article);
   })
