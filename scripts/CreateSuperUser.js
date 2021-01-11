@@ -1,9 +1,8 @@
-require('dotenv').config();
 const db = require('../models/index');
 
 const { User } = db;
 
-async function createSuperUser() {
+function createSuperUser() {
   let firstname, lastname, email, password;
   const args = process.argv.slice(2);
   if (args.length < 4) {
@@ -35,6 +34,26 @@ async function createSuperUser() {
     }
   });
 
+  if (!firstname) {
+    console.error('Error: you must include a fname argument');
+    return;
+  }
+
+  if (!lastname) {
+    console.error('Error you must include a lname argument');
+    return;
+  }
+
+  if (!email) {
+    console.log('Error you must include an email argument');
+    return;
+  }
+
+  if (!password) {
+    console.log('Error you must include a password argument');
+    return;
+  }
+
   User.create({
     firstname,
     lastname,
@@ -43,8 +62,8 @@ async function createSuperUser() {
     createdAt: new Date(),
     updatedAt: new Date(),
   })
-    .then((user) => console.log(`Success! Created new user ${user.firstname}`))
-    .catch((err) => console.error('Error, unable to create user', err));
+    .then((user) => console.log(`Success! Created new user ${user.firstname}.`))
+    .catch((err) => console.error('Error, unable to create user.', err));
 }
 
 createSuperUser();
