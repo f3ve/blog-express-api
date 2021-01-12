@@ -70,7 +70,7 @@ async function createSuperUser() {
     User.create({
       firstname,
       lastname,
-      password,
+      password: hash,
       email,
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -13,14 +13,28 @@ const router = express.Router();
 router
   .route('/')
   .get((req, res, next) => {
+    limit = parseInt(req.query.limit) || 20;
+    page = (parseInt(req.query.page) - 1) * limit || 0;
+    category = parseInt(req.query.category);
+    console.log({
+      draft: false,
+      ...(category && { category }),
+    });
     Article.findAll({
-      // include: {
-      //   model: db.User,
-      //   attributes: ['firstname', 'lastname'],
-      // },
-      include: db.Category,
+      where: {
+        draft: false,
+        ...(category && { CategoryId: category }),
+      },
+      offset: page,
+      limit: limit,
     })
-      .then((articles) => res.send(articles))
+      .then((articles) =>
+        res.json({
+          results: articles,
+          total: articles.length,
+          page: page / 20 + 1 || 1,
+        })
+      )
       .catch((err) => next(err));
   })
   .post(requireAuth, parser, (req, res, next) => {
@@ -33,6 +47,8 @@ router
         .toLowerCase()
         .replace(/[^\w\s]|_/g, '')
         .replace(/\s/g, '_'),
+      category: req.body.category,
+      draft: req.body.draft,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
