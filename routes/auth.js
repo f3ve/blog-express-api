@@ -12,6 +12,11 @@ const { User } = db;
 const router = express.Router();
 
 router.route('/login').post(parser, (req, res, next) => {
+  /* 
+    checks email and password are valid and authenticates users by sending a 
+    cookie containing a signed JWT
+  */
+
   User.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (user === null) {

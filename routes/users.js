@@ -1,7 +1,11 @@
+/* 
+  Currently there are no plans to let visitors to site create a user account. 
+  Owner/admin can create users using the create user script in package.json
+*/
+
 const express = require('express');
 const db = require('../models/index');
 const bodyParser = require('body-parser');
-const requireAuth = require('../middleware/auth');
 
 parser = bodyParser.json();
 

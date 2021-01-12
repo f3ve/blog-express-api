@@ -3,6 +3,9 @@ const db = require('../models/index');
 const { Article } = db;
 
 async function checkExists(req, res, next) {
+  /* 
+    checks specified article exists and attaches it to res.article
+  */
   try {
     article = await Article.findOne({ where: { slug: req.params.slug } });
 

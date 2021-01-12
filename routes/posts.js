@@ -13,18 +13,24 @@ const router = express.Router();
 router
   .route('/')
   .get((req, res, next) => {
+    /*
+      Get a paginated list of public articles. can optionally filter by category
+      or page. limit defaults to 20 but can be increased or decreased using 
+      query params
+    */
+
+    // optional values based on query params
     limit = parseInt(req.query.limit) || 20;
     page = (parseInt(req.query.page) - 1) * limit || 0;
     category = parseInt(req.query.category);
-    console.log({
-      draft: false,
-      ...(category && { category }),
-    });
+
     Article.findAll({
       where: {
         draft: false,
+        // conditionally add CategoryId to where if category is not undefined
         ...(category && { CategoryId: category }),
       },
+      //paginate results
       offset: page,
       limit: limit,
     })
@@ -38,6 +44,11 @@ router
       .catch((err) => next(err));
   })
   .post(requireAuth, parser, (req, res, next) => {
+    /* 
+      Creates a new article, requires authentication so currently only site 
+      owner/admin can create articles.
+    */
+
     Article.create({
       title: req.body.title,
       UserId: 1,
@@ -63,14 +74,26 @@ router
   .route('/:slug')
   .all(checkExists)
   .get((req, res, next) => {
+    /* 
+      returns specified article
+    */
+
     res.send(res.article);
   })
   .delete(requireAuth, (req, res, next) => {
+    /* 
+      deletes specified article. requires authentication.
+    */
+
     Article.destroy({
       where: { slug: req.params.slug },
     }).then(res.status(204).end());
   })
   .patch(requireAuth, parser, (req, res, next) => {
+    /* 
+      update field values of specified article, requires authentication
+    */
+
     const slug = req.body.title
       .toLowerCase()
       .replace(/[^\w\s]|_/g, '')

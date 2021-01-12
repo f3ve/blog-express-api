@@ -1,3 +1,7 @@
+/* 
+  Node script for creating users via CLI.
+*/
+
 const db = require('../models/index');
 const bcrypt = require('bcrypt');
 
