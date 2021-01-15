@@ -9,6 +9,7 @@ const app = express();
 
 const corsOptions = {
   origin: CLIENT_ORIGIN,
+  credentials: true,
 };
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
