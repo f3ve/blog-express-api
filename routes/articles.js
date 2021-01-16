@@ -47,13 +47,21 @@ router
     /* 
       Creates a new article, requires authentication so currently only site 
       owner/admin can create articles.
+
+      example req.body: {
+        title: string
+        content: string
+        category: integer
+        draft: boolean
+        publish_date: date string
+      }
     */
 
     Article.create({
       title: req.body.title,
       UserId: 1,
       content: req.body.content,
-      publish_date: new Date(),
+      publish_date: req.body.publish_date || new Date(),
       slug: req.body.title
         .toLowerCase()
         .replace(/[^\w\s]|_/g, '')
