@@ -25,6 +25,11 @@ router.route('/login').post(parser, async (req, res, next) => {
   hash = user.dataValues.password;
   password = req.body.password;
 
+  console.log({
+    hash,
+    password,
+  });
+
   bcrypt.compare(password, hash, (err, result) => {
     if (result) {
       const token = jwt.sign({ user: user.id }, JWT_SECRET);
@@ -38,7 +43,7 @@ router.route('/login').post(parser, async (req, res, next) => {
         .end();
     }
     if (!result) {
-      res.status(400).json({ error: 'Incorrect email or password' });
+      res.status(400).json({ error: 'Incorrect email or password' }).end();
     }
 
     if (err) {
