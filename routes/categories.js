@@ -5,12 +5,13 @@ const { Category } = db;
 
 const router = express.Router();
 
-router.route('/').get((req, res, next) => {
+router.route('/').get(async (req, res, next) => {
   /* 
     returns a list of all categories in db
   */
 
-  Category.findAll().then((categories) => res.status(200).send(categories));
+  const categories = await Category.findAll();
+  res.status(200).send(categories);
 });
 
 module.exports = router;

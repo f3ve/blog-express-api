@@ -13,10 +13,9 @@ const { User } = db;
 
 const router = express.Router();
 
-router.route('/').get((req, res, next) => {
-  User.findAll({ attributes: ['firstname', 'lastname'] }).then((users) =>
-    res.status(200).send(users)
-  );
+router.route('/').get(async (req, res, next) => {
+  const users = await User.findAll({ attributes: ['firstname', 'lastname'] });
+  res.status(200).send(users);
 });
 
 module.exports = router;
