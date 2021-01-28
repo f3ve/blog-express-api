@@ -50,14 +50,6 @@ router
     /* 
       Creates a new article, requires authentication so currently only site 
       owner/admin can create articles.
-
-      example req.body: {
-        title: string
-        content: string
-        category: integer
-        draft: boolean
-        publish_date: date string
-      }
     */
 
     try {

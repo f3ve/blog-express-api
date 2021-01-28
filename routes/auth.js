@@ -32,7 +32,9 @@ router.route('/login').post(parser, async (req, res, next) => {
 
   bcrypt.compare(password, hash, (err, result) => {
     if (result) {
-      const token = jwt.sign({ user: user.id }, JWT_SECRET);
+      const token = jwt.sign({ user: user.id }, JWT_SECRET, {
+        expiresIn: 900000,
+      });
       res
         .cookie('authcookie', token, {
           maxAge: 900000,
